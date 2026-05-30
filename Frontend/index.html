@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tic-Tac-Toe vs AI</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>Tic-Tac-Toe</h1>
+      <p class="subtitle">Player <span class="mark player-mark">X</span> vs Player <span class="mark ai-mark">O</span></p>
+    </header>
+
+    <section class="scoreboard" aria-label="Scoreboard">
+      <div class="score-card player">
+        <span class="score-label">X Wins</span>
+        <span id="x-wins" class="score-value">0</span>
+      </div>
+      <div class="score-card draws">
+        <span class="score-label">Draws</span>
+        <span id="draws" class="score-value">0</span>
+      </div>
+      <div class="score-card ai">
+        <span class="score-label">O Wins</span>
+        <span id="o-wins" class="score-value">0</span>
+      </div>
+    </section>
+
+    <p id="status" class="status" role="status">Loading game…</p>
+
+    <div id="board" class="board" role="grid" aria-label="Tic-tac-toe board"></div>
+
+    <div class="actions">
+      <button id="restart-btn" type="button" class="btn btn-primary">Restart Game</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
