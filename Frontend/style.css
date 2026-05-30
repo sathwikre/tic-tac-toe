@@ -7,8 +7,8 @@
   --muted: #8b9cb3;
   --player: #3b82f6;
   --player-glow: rgba(59, 130, 246, 0.35);
-  --ai: #f43f5e;
-  --ai-glow: rgba(244, 63, 94, 0.35);
+  --player-o: #f43f5e;
+  --player-o-glow: rgba(244, 63, 94, 0.35);
   --accent: #22c55e;
   --radius: 14px;
   --shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
@@ -68,8 +68,8 @@ body {
   color: var(--player);
 }
 
-.ai-mark {
-  color: var(--ai);
+.player-o-mark {
+  color: var(--player-o);
 }
 
 .scoreboard {
@@ -101,8 +101,8 @@ body {
   border-top: 3px solid var(--muted);
 }
 
-.score-card.ai {
-  border-top: 3px solid var(--ai);
+.score-card.player-o {
+  border-top: 3px solid var(--player-o);
 }
 
 .score-label {
@@ -171,29 +171,13 @@ body {
 }
 
 .cell.o {
-  color: var(--ai);
-  text-shadow: 0 0 24px var(--ai-glow);
+  color: var(--player-o);
+  text-shadow: 0 0 24px var(--player-o-glow);
 }
 
 .cell:disabled {
   cursor: default;
   opacity: 0.95;
-}
-
-.cell.last-ai {
-  animation: pulse 0.5s ease;
-}
-
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 var(--ai-glow);
-  }
-  70% {
-    box-shadow: 0 0 0 12px transparent;
-  }
-  100% {
-    box-shadow: none;
-  }
 }
 
 .actions {
