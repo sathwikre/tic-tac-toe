@@ -1,5 +1,4 @@
-//const API_BASE = "http://localhost:5180/api/game";
-const API_BASE = "https://tic-tac-toe-hxlx.onrender.com";
+const API_BASE = "http://localhost:5180/api/game";
 
 const scores = { x: 0, o: 0, draws: 0 };
 let gameId = null;
