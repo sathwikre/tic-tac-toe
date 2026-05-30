@@ -1,123 +1,177 @@
-# Tic-Tac-Toe vs AI
+# Tic-Tac-Toe Web Application
 
-Full-stack Tic-Tac-Toe with an ASP.NET Core Web API backend and a vanilla HTML/CSS/JavaScript frontend. You play as **X**; the AI plays as **O** using win → block → random strategy.
+## Project Overview
 
-## Project structure
+This project is a simple Tic-Tac-Toe web application built using ASP.NET Core Web API for the backend and HTML, CSS, and JavaScript for the frontend.
 
+The application allows two players (X and O) to play Tic-Tac-Toe on the same device. The backend manages the game state, validates moves, checks win/draw conditions, and returns the updated board to the frontend through REST APIs.
+
+## Technologies Used
+
+### Backend
+
+* C#
+* ASP.NET Core Web API
+* Swagger
+
+### Frontend
+
+* HTML
+* CSS
+* JavaScript
+
+## Project Structure
+
+```text
+Backend/
+├── Controllers/
+│   └── GameController.cs
+├── Models/
+│   ├── MoveRequest.cs
+│   └── GameResponse.cs
+├── Services/
+│   └── GameLogic.cs
+├── Program.cs
+└── appsettings.json
+
+Frontend/
+├── index.html
+├── style.css
+└── script.js
 ```
-tictaktoi/
-├── Backend/
-│   ├── Controllers/GameController.cs
-│   ├── Services/GameLogic.cs
-│   ├── Services/AIPlayer.cs
-│   ├── Models/MoveRequest.cs
-│   ├── Models/GameResponse.cs
-│   ├── Program.cs
-│   └── TicTacToe.Api.csproj
-├── Frontend/
-│   ├── index.html
-│   ├── style.css
-│   └── script.js
-└── README.md
-```
 
-## Prerequisites
+## Features
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-- A modern web browser
-- Optional: [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) or Python for serving the frontend
+* Start a new game
+* Two-player gameplay (X and O)
+* Move validation
+* Win detection
+* Draw detection
+* Reset game functionality
+* REST API integration
+* Responsive web interface
 
-## Setup and run
+## How to Run the Project
 
-### 1. Start the API
+### 1. Start the Backend API
 
-```bash
-cd Backend
-dotnet restore
+Open a terminal and navigate to the Backend folder:
+
+```powershell
+cd c:\deep\tictaktoi\Backend
 dotnet run
 ```
 
-The API listens at **http://localhost:5180**. Swagger UI: http://localhost:5180/swagger
+After the application starts, you should see an output similar to:
 
-### 2. Serve the frontend
-
-The frontend must be opened from a web origin (not `file://`) so `fetch` and CORS work reliably.
-
-**Option A — VS Code Live Server:** Open `Frontend/index.html` → “Open with Live Server”.
-
-**Option B — Python:**
-
-```bash
-cd Frontend
-python -m http.server 5500
+```text
+Now listening on: http://localhost:5180
 ```
 
-Open http://localhost:5500
+### 2. Start the Frontend
 
-**Option C — npx:**
+Open another terminal and navigate to the Frontend folder:
 
-```bash
-cd Frontend
-npx --yes serve -p 5500
+```powershell
+cd c:\deep\tictaktoi\Frontend
+python -m http.server 5501
 ```
 
-If your API runs on a different port, edit `API_BASE` in `Frontend/script.js`.
+If Python is installed using the Windows launcher:
 
-## API endpoints
+```powershell
+py -m http.server 5501
+```
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/api/game/new` | Create a new game; returns `gameId` and empty board |
-| `POST` | `/api/game/move` | Body: `{ "gameId", "row", "col" }` — player move + AI reply |
-| `POST` | `/api/game/reset/{gameId}` | Clear the board for the same session |
+### 3. Open the Application
 
-### Example: new game
+Open the following URL in your browser:
+
+```text
+http://127.0.0.1:5501/
+```
+
+The game board should appear and be ready to play.
+
+## API Endpoints
+
+### Create New Game
+
+```http
+POST /api/game/new
+```
+
+Creates a new game and returns a unique Game ID.
+
+### Make a Move
+
+```http
+POST /api/game/move
+```
+
+Request Body:
 
 ```json
 {
-  "gameId": "abc123...",
-  "board": [["", "", ""], ["", "", ""], ["", "", ""]],
-  "status": "InProgress",
-  "message": "Your turn. You are X."
+  "gameId": "abc123",
+  "row": 0,
+  "col": 1,
+  "player": "X"
 }
 ```
 
-### Example: after a move
+### Reset a Game
 
-```json
-{
-  "gameId": "...",
-  "board": [["X", "", ""], ["", "O", ""], ["", "", ""]],
-  "status": "InProgress",
-  "message": "Your turn.",
-  "aiRow": 1,
-  "aiCol": 1
-}
+```http
+POST /api/game/reset/{gameId}
 ```
 
-`status` values: `InProgress`, `PlayerWin`, `AiWin`, `Draw`, `Invalid`.
+Resets the board while keeping the same Game ID.
 
-## How the AI works
+## Game Status Values
 
-`AIPlayer` evaluates all eight winning lines:
+The API can return the following status values:
 
-1. **Win** — If two cells are `O` and one is empty, play the empty cell.
-2. **Block** — If two cells are `X` and one is empty, play the empty cell.
-3. **Random** — Otherwise pick a random free cell.
+* InProgress
+* XWin
+* OWin
+* Draw
+* Invalid
 
-## Architecture notes
+## Swagger Documentation
 
-- **GameLogic** — Board state (in-memory per `gameId`), validation, win/draw detection, orchestrates human then AI turns.
-- **AIPlayer** — Pure strategy; no HTTP knowledge.
-- **GameController** — Thin REST layer returning JSON.
-- **Frontend** — Renders the 3×3 grid, calls the API with `fetch()`, tracks local scoreboard, highlights the AI’s last move.
+Swagger is available at:
 
-Games are stored in memory and are lost when the API restarts.
+```text
+http://localhost:5180/swagger
+```
 
-## Troubleshooting
+It can be used to test API endpoints directly from the browser.
 
-| Issue | Fix |
-|-------|-----|
-| “Cannot reach API” | Run `dotnet run` in `Backend` and confirm port `5180` |
-| CORS errors | API enables CORS for all origins in development |
-| Wrong API URL | Update `API_BASE` in `script.js` |
+## Common Issues
+
+### Frontend loads but moves are not working
+
+Ensure that the backend API is running before opening the frontend.
+
+### Unable to connect to the API
+
+Verify that the backend is running on the expected port and that the API URL configured in `script.js` matches the backend URL.
+
+### Build errors related to locked files
+
+Stop any previously running API processes and rebuild the application.
+
+## Future Enhancements
+
+* AI opponent
+* Score tracking
+* Persistent game storage using a database
+* Multiplayer support
+* Improved UI and animations
+
+## Requirements
+
+* .NET 8 SDK
+* Python (for serving frontend files)
+* Modern web browser
